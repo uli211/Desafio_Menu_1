@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Ucu.Poo.Restaurant
 {
@@ -6,12 +6,13 @@ namespace Ucu.Poo.Restaurant
     {
         public int Number { get; }
         public bool IsOccupied { get; private set; }
-        private ArrayList order = new ArrayList();
+        private Order order;
 
         public Table(int number)
         {
             Number = number;
             IsOccupied = false;
+            order = new Order();
         }
 
         public void Occupy()
@@ -22,27 +23,22 @@ namespace Ucu.Poo.Restaurant
         public void Free()
         {
             IsOccupied = false;
-            order.Clear();
+            order = new Order(); // Crear una nueva instancia de Order al liberar la mesa.
         }
 
         public void AddToOrder(Dish dish)
         {
-            order.Add(dish);
+            order.AddDish(dish);
         }
 
         public double GetTotal()
         {
-            double total = 0;
-            foreach (Dish dish in order)
-            {
-                total += dish.Price;
-            }
-            return total;
+            return order.GetTotal(); // Delegar el cálculo a la clase Order.
         }
 
         public bool HasOrders()
         {
-            return this.order.Count > 0;
+            return order.HasDishes(); // Verifica si hay platillos en la orden.
         }
     }
 }
