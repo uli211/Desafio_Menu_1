@@ -1,58 +1,51 @@
-namespace Ucu.Poo.Restaurant;
+using System.Collections.Generic; // Importar el espacio de nombres correcto
 
-using System.Collections;
-
-/// <summary>
-/// Representa una mesa en el restaurante.
-/// </summary>
-public class Table
+namespace Ucu.Poo.Restaurant
 {
-    public int Number { get; }
-    public bool IsOccupied { get; private set; }
-    private ArrayList order = new ArrayList();
-
-    // Constructor para inicializar la mesa con un número.
-    public Table(int number)
+    public class Table
     {
-        this.Number = number;
-        this.IsOccupied = false;
-    }
+        public int Number { get; private set; }
+        public bool IsOccupied { get; private set; }
+        private Order order;
 
-    // Método para marcar la mesa como ocupada.
-    public void Occupy()
-    {
-        this.IsOccupied = true;
-    }
-
-    // Método para liberar la mesa y vaciar los pedidos.
-    public void Free()
-    {
-        this.IsOccupied = false;
-        this.order.Clear();
-    }
-
-    // Método para agregar un platillo a la orden.
-    public void AddToOrder(Dish dish)
-    {
-        if (this.IsOccupied)
+        public Table(int number)
         {
-            this.order.Add(dish);
+            this.Number = number;
+            this.IsOccupied = false;
         }
-    }
 
-    // Método para determinar si la mesa tiene pedidos.
-    public bool HasOrders()
-    {
-        return this.order.Count > 0;
-    }
-
-    // Método para mostrar la orden actual.
-    public void ShowOrder()
-    {
-        Console.WriteLine($"Mesa {Number}:");
-        foreach (Dish dish in order)
+        public void Occupy()
         {
-            Console.WriteLine(dish.ToString());
+            this.IsOccupied = true;
+            this.order = new Order();
+        }
+
+        public void Free()
+        {
+            this.IsOccupied = false;
+            this.order = null;
+        }
+
+        public void AddToOrder(Dish dish)
+        {
+            if (this.order != null)
+            {
+                this.order.AddDish(dish);
+            }
+        }
+
+        public double GetTotal()
+        {
+            if (this.order != null)
+            {
+                return this.order.GetTotal();
+            }
+            return 0;
+        }
+
+        public bool HasOrders()
+        {
+            return this.order != null && this.order.GetTotal() > 0;
         }
     }
 }

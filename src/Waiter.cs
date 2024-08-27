@@ -1,43 +1,37 @@
-namespace Ucu.Poo.Restaurant;
+using System.Collections.Generic; // Importar el espacio de nombres correcto
 
-using System.Collections;
-
-/// <summary>
-/// Representa un mozo en el restaurante, encargado de atender mesas.
-/// </summary>
-public class Waiter
+namespace Ucu.Poo.Restaurant
 {
-    public string Name { get; }
-    private ArrayList assignedTables = new ArrayList();
-
-    // Constructor para inicializar el nombre del mozo.
-    public Waiter(string name)
+    public class Waiter
     {
-        this.Name = name;
-    }
+        public string Name { get; private set; }
+        private List<Table> assignedTables = new List<Table>(); // Cambiar a List<Table>
 
-    // Método para asignar una mesa al mozo.
-    public void AssignTable(Table table)
-    {
-        this.assignedTables.Add(table);
-    }
-
-    // Método para tomar un pedido y agregarlo a la orden de la mesa.
-    public void TakeOrder(Table table, Dish dish)
-    {
-        if (this.assignedTables.Contains(table))
+        public Waiter(string name)
         {
-            table.AddToOrder(dish);
+            this.Name = name;
         }
-    }
 
-    // Método para mostrar las mesas asignadas al mozo.
-    public void ShowAssignedTables()
-    {
-        Console.WriteLine($"Mesas asignadas al mozo {Name}:");
-        foreach (Table table in assignedTables)
+        public void AssignTable(Table table)
         {
-            Console.WriteLine($"Mesa {table.Number}");
+            this.assignedTables.Add(table);
+        }
+
+        public void TakeOrder(Table table, Dish dish)
+        {
+            if (this.assignedTables.Contains(table))
+            {
+                table.AddToOrder(dish);
+            }
+        }
+
+        public double GetTotal(Table table)
+        {
+            if (this.assignedTables.Contains(table))
+            {
+                return table.GetTotal();
+            }
+            return 0;
         }
     }
 }
