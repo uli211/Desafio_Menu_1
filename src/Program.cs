@@ -1,40 +1,39 @@
-﻿using Ucu.Poo.Restaurant;
+﻿using System;
+using Ucu.Poo.Restaurant;
 
-class Program
+namespace Ucu.Poo.RestaurantApp
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Crear platillos.
-        Dish pasta = new Dish("Pasta", 12.99, true);
-        Dish steak = new Dish("Steak", 25.50, false);
+        static void Main(string[] args)
+        {
+            // Crear algunos platillos
+            Dish dish1 = new Dish("Spaghetti", 10.50, false);
+            Dish dish2 = new Dish("Salad", 5.75, true);
+            Dish dish3 = new Dish("Pizza", 12.00, false);
 
-        // Crear el menú y agregar platillos.
-        Menu menu = new Menu();
-        menu.AddDish(pasta);
-        menu.AddDish(steak);
+            // Crear un menú y agregar los platillos
+            Menu menu = new Menu();
+            menu.AddDish(dish1);
+            menu.AddDish(dish2);
+            menu.AddDish(dish3);
 
-        // Mostrar el menú.
-        Console.WriteLine("Menú del restaurante:");
-        menu.ShowMenu();
+            // Crear una mesa y asignarla a un mozo
+            Table table1 = new Table(1);
+            Waiter waiter = new Waiter("John");
+            waiter.AssignTable(table1);
 
-        // Crear una mesa y un mozo.
-        Table table1 = new Table(1);
-        Waiter waiter1 = new Waiter("Juan");
+            // Ocupamos la mesa y tomamos pedidos
+            table1.Occupy();
+            waiter.TakeOrder(table1, dish1);
+            waiter.TakeOrder(table1, dish2);
 
-        // Asignar la mesa al mozo y ocuparla.
-        waiter1.AssignTable(table1);
-        table1.Occupy();
+            // Mostrar el total de la orden
+            Console.WriteLine($"Total de la orden en la mesa {table1.Number}: ${table1.GetTotal()}");
 
-        // Tomar pedidos.
-        waiter1.TakeOrder(table1, pasta);
-        waiter1.TakeOrder(table1, steak);
-
-        // Mostrar la orden de la mesa.
-        table1.ShowOrder();
-
-        // Liberar la mesa y mostrar el estado.
-        table1.Free();
-        Console.WriteLine("Mesa liberada.");
-        Console.WriteLine($"Mesa {table1.Number} ocupada: {table1.IsOccupied}");
+            // Liberar la mesa
+            table1.Free();
+            Console.WriteLine($"La mesa {table1.Number} está ocupada: {table1.IsOccupied}");
+        }
     }
 }
